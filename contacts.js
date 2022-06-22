@@ -1,8 +1,29 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const contactsPath = path.resolve("./db/contacts.json");
 
-const readData = data => { fs.readFile(data) };
-const writeData = data => { fs.writeFile(data) };
+fs.readFile(contactsPath).then(data => console.log(data.toString())).catch(error => console.error(error))
 
-module.exports = { readData, writeData };
+//! function 
+function listContacts() {
+    console.log("listContacts")
+    return fs.readFile(contactsPath)
+        .then(data => console.log(data.toString()))
+        .catch(error => console.error(error));
+};
+
+function getContactById(contactId) {
+  // ...твой код
+}
+
+function removeContact(contactId) {
+  // ...твой код
+}
+
+function addContact(name, email, phone) {
+  // ...твой код
+};
+
+listContacts();
+
+module.exports = { };
