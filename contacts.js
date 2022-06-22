@@ -5,11 +5,15 @@ const contactsPath = path.resolve("./db/contacts.json");
 fs.readFile(contactsPath).then(data => console.log(data.toString())).catch(error => console.error(error))
 
 //! function 
-function listContacts() {
+async function listContacts() {
     console.log("listContacts")
-    return fs.readFile(contactsPath)
-        .then(data => console.log(data.toString()))
-        .catch(error => console.error(error));
+    try {
+        const response = await fs.readFile(contactsPath);
+        return response.toString();
+    }
+    catch (error) {
+        console.error(error);
+    };
 };
 
 function getContactById(contactId) {
@@ -26,4 +30,4 @@ function addContact(name, email, phone) {
 
 listContacts();
 
-module.exports = { };
+module.exports = { listContacts };
