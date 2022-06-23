@@ -4,48 +4,57 @@ const contactsPath = path.resolve("./db/contacts.json");
 
 
 //! function 
-async function listContacts() {
+function listContacts() {
     fs.readFile(contactsPath, "utf-8", (error, data) => {
         if (error) {
-            console.error(error);
+            return console.error(error);
         }
-        return console.log(data);
+        return console.table(JSON.parse(data));
     });
 };
 
 function getContactById(id) {
     fs.readFile(contactsPath, "utf-8", (error, data) => {
         if (error) {
-            console.error(error);
+            return console.error(error);
         }
         const found = JSON.parse(data).filter(elem => elem.id === id.toString());
         if (found.length < 1) {
             return console.log("Sorry, this person is not in the contact database!");
         }
-        return console.log(found);
+        return console.table(found);
     });
 };
 
-//function removeContact(contactId) {
-//  console.log("removeContact")
-//  fs.readFile(contactsPath, "utf-8").then(data => {
-//    const found = JSON.parse(data).filter(elem => elem.id === id.toString())
-//    if (found.length < 1) {
-//      return console.log("Sorry, this person is not in the contact database!");
-//    }
-//
-//  });
-//}
+
+
+function removeContact(id) {
+    fs.readFile(contactsPath, "utf-8", (error, data) => {
+        if (error) {
+            return console.error(error);
+        }
+        const found = JSON.parse(data).filter(elem => elem.id !== id.toString());
+        if (found.length === JSON.parse(data).length) {
+            return console.log("Sorry, this person is not in the contact database!");
+        }
+        fs.writeFile(contactsPath, JSON.stringify(found), (error) => {
+            if (error) {
+                return console.error(error);
+            }
+            return listContacts();
+        });
+    });
+};
+
 
 
 function addContact(name, email, phone) {
     fs.readFile(contactsPath, "utf-8", (error, data) => {
         if (error) {
-            console.error(error);
+            return console.error(error);
         }
 
-        const coincidence = JSON.parse(data).filter(elem => elem.name === name.toString())
-        console.log(coincidence)
+        const coincidence = JSON.parse(data).filter(elem => elem.name === name.toString());
         if (coincidence.length >= 1) {
             return console.log("This name already exists in the database!")
         }
@@ -55,15 +64,14 @@ function addContact(name, email, phone) {
         const dataContacts = [...JSON.parse(data), newContact];
         fs.writeFile(contactsPath, JSON.stringify(dataContacts), (error) => {
             if (error) {
-                console.error(error);
+                return console.error(error);
             }
             return listContacts();
-        })
+        });
     });
 };
 
-//listContacts();
-//getContactById(2);
-addContact("Victor Close", "vicclose@mail.com", "222-11-22")
 
-//module.exports = { listContacts };
+//addContact("Victor Close", "vicclose@mail.com", "222-11-22")
+
+module.exports = { listContacts, getContactById, removeContact, addContact };
