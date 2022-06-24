@@ -37,7 +37,7 @@ function removeContact(id) {
         if (found.length === JSON.parse(data).length) {
             return console.log("Sorry, this person is not in the contact database!");
         }
-        fs.writeFile(contactsPath, JSON.stringify(found), (error) => {
+        fs.writeFile(contactsPath, JSON.stringify(found, null, '\t'), (error) => {
             if (error) {
                 return console.error(error);
             }
@@ -62,7 +62,7 @@ function addContact(name, email, phone) {
         const id = JSON.parse(data).length + 1;
         const newContact = { id: id.toString(), name, email, phone };
         const dataContacts = [...JSON.parse(data), newContact];
-        fs.writeFile(contactsPath, JSON.stringify(dataContacts), (error) => {
+        fs.writeFile(contactsPath, JSON.stringify(dataContacts, null, '\t'), (error) => {
             if (error) {
                 return console.error(error);
             }
