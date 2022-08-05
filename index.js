@@ -8,7 +8,7 @@ program
     .option("-e, --email <type>", "user email")
     .option("-p, --phone <type>", "user phone");
 
-program.parse(process.argv);
+program.parse(process.argv); // превращает данные с консоли в объект
 const argv = program.opts();
 
 function invokeAction({ action, id, name, email, phone }) {
